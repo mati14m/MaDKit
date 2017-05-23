@@ -14,8 +14,9 @@ public class MyScheduler2 extends Scheduler {
     protected void activate() {
         String role1 = "1";
         String role2 = "2";
-        String community = "local";
+        String community = "mycomm";
         int numberOfMessages = 1000;
+        int numberOfAgents = 50;
         String text = "test";
         KernelAction.LAUNCH_NETWORK.getActionFor(this).actionPerformed(null);
 
@@ -26,15 +27,16 @@ public class MyScheduler2 extends Scheduler {
         logger.info(text);
         byte[] messageText = text.getBytes();
 
-        for (int i = 0; i < 50; i++) {    //number of agents * 2 (pair)
+        for (int i = 0; i < numberOfAgents; i++) {    //number of agents - first of pair
             createGroupIfAbsent(community, Integer.toString(i), true);
             launchAgent(new MyAgent(role1, role2, Integer.toString(i), community, numberOfMessages, messageText));
             activator1 = new GenericBehaviorActivator<AbstractAgent>(community, Integer.toString(i), "1", "doIt");
             addActivator(activator1);
         }
 
+        launchAgent(new Statistics(numberOfAgents, community));  //agent od statystyk
         logger.info("Scheduler!!!");
-        setDelay(300);
+        setDelay(0);
     }
 
 

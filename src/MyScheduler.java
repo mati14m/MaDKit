@@ -15,6 +15,7 @@ public class MyScheduler extends Scheduler {
 		String role2 = "2";
 		String community = "community";
 		int numberOfMessages = 1000;
+		int numberOfAgents = 100;
 		String text = "test";
 
 		for(int i=0; i<5; i++){    //length of message
@@ -23,7 +24,7 @@ public class MyScheduler extends Scheduler {
 		logger.info(text);
 		byte[] messageText = text.getBytes();
 
-		for (int i = 0; i < 500; i++) {    //number of agents * 2 (pair)
+		for (int i = 0; i < numberOfAgents; i++) {    //number of agents * 2 (pair)
 			createGroup("community", Integer.toString(i));
 			launchAgent(new MyAgent(role1, role2, Integer.toString(i), community, numberOfMessages, messageText));
 			launchAgent(new MyAgent(role2, role1, Integer.toString(i), community, numberOfMessages, messageText));
@@ -31,8 +32,9 @@ public class MyScheduler extends Scheduler {
 			addActivator(activator1);
 		}
 
+		launchAgent(new Statistics(numberOfAgents, community));
 		logger.info("Scheduler!!!");
-		setDelay(300);
+		setDelay(0);
 	}
 
 

@@ -37,6 +37,7 @@ public class MyAgent extends Agent {
         AgentAddress other = null;
         while(other == null){
             other = getAgentWithRole(community, group, partnerRole);
+            pause(200);
         }
 
         if(myRole.equals("1")){
@@ -70,7 +71,17 @@ public class MyAgent extends Agent {
     protected void end() {
         if(myRole.equals("1")){
             logger.log(Level.INFO, Long.toString(endTime - startTime));
+            pause(5000);
+            StatMsg msg = new StatMsg();
+            msg.setTime(endTime - startTime);
+            requestRole(community, "stat", "sender");
+            AgentAddress stat = getAgentWithRole(community, "stat", "rec");
+            sendMessage(stat, msg);
         }
-        pause(5000);
+        else {
+            pause(5000);
+        }
+
+
     }
 }
